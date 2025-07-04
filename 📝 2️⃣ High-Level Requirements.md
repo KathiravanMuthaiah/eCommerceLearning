@@ -6,7 +6,7 @@ I am structuring this in **functional**, **non-functional**, and **integration**
 
 ### 🟢 2.1 Functional Requirements
 
-1. **Product Catalog**
+1. **Product Catalog** ( below all off the shelf)
    - Category and product hierarchy
    - SKU management
    - Inventory quantities
@@ -14,38 +14,40 @@ I am structuring this in **functional**, **non-functional**, and **integration**
      - Base price
      - Discounted price
      - Campaign price
-2. **Shopping Cart**
+2. **Shopping Cart** ( below all off the shelf)
    - Persistent carts per user
    - Guest carts
    - Real-time inventory reservation
-3. **Order Management**
+3. **Order Management**  ( below all off the shelf)
    - Checkout workflow
    - Payment processing
    - Order state machine (e.g., created, paid, shipped, delivered, returned)
-4. **Campaign and Promotions**
+4. **Campaign and Promotions** ( below all off the shelf)
    - Percentage or fixed discounts
    - Early delivery incentives
    - Coupons and voucher support
    - Time-bound promotions
    - Campaign prioritization rules
-5. **Stock Management**
+5. **Stock Management** ( to integrate with external ERP)
    - Real-time inventory updates
    - Multi-warehouse support
    - Stock threshold alerts
 6. **Delivery Tracking**
-   - Carrier integration APIs
-   - Customer notifications (SMS/Email)
-   - ETA calculations
-   - Proof of delivery recording
-7. **User Management**
+   - Carrier integration APIs  (to integrate with external delivery system)
+   - Customer notifications (SMS/Email) ( to use AWS tools)
+   - ETA calculations  (to integrate with external delivery system)
+   - Proof of delivery recording  (to integrate with external delivery system)
+7. **User Management**  ( to integrate with external ERP)
    - Customer registration
    - Profile management
    - Role-based access for internal staff
-8. **Reporting**
-   - Sales reports
-   - Inventory movement reports
-   - Campaign effectiveness reports
-   - Delivery performance reports
+8. **Reporting** ( custom report through API to reactjs,  a simple admin domain to login and access these reports)
+   1. Pulled live from the operational DB
+   2. Sales reports
+   3. Inventory movement reports
+   4. Campaign effectiveness reports
+   5. Delivery performance reports
+
 
 ------
 
@@ -66,6 +68,8 @@ I am structuring this in **functional**, **non-functional**, and **integration**
    - OWASP Top 10 compliance
    - PCI-DSS readiness for payments
    - Secure API authentication (OAuth2/JWT)
+   - **mTLS for internal service communication** (Kubernetes best practice)
+   - **IAM roles for AWS resources**
 6. **Data Consistency**
    - Strong consistency for inventory and orders
    - Eventual consistency acceptable for reporting
@@ -77,18 +81,16 @@ I am structuring this in **functional**, **non-functional**, and **integration**
 
 ### 🟣 2.3 Integration Requirements
 
-1. **Payment Gateways**
-   - Support for at least 2 major gateways
-2. **Carrier APIs**
+1. **Payment Gateways** ( Moving to next version of development, now focus only on ecommerce off the shelf, ERP off the shelf, reporting development, integration development)
+   - Support for at least 1 major gateway preferred MTN MoMo.
+2. **Carrier APIs**   ( Moving to next version of development, now focus only on ecommerce off the shelf, ERP off the shelf, reporting development, integration development)
    - For delivery tracking
-3. **ERP/CRM**
+3. **ERP/CRM** (we need to choose the ERP and CRM which is very minimal for our ecommerce and opensource)
    - Sync stock and customer data
-4. **Notification Providers**
+4. **Notification Providers** ( Use AWS (SES/SNS) and Firebase for notifications)
    - SMS
    - Email
    - Push notifications
-5. **Analytics Platform**
-   - Data export to data warehouse
 
 ------
 
@@ -103,5 +105,15 @@ I am structuring this in **functional**, **non-functional**, and **integration**
    - Git-based workflows
    - Automated testing pipelines
 4. **Environment Strategy**
-   - DEV, QA, STAGING, PROD
+   - DEV, QA,  PROD ( removed Staging directly to PROD from QA)
    - Blue/Green or Canary deployments
+
+
+
+🔵 2.5 Development environment and PROD environment
+
+1. **Development and QA** most of them in docker and kubernetes
+   - we are using eclipse IDE, minikube, docker, postgreSQL(docker), JDK 17, github, gitaction, open telemetry, jeager, graffana, prometheus further we will discuss and finalise 
+2. **Production**
+   - All AWS based platform and services. But match exact with dev model whereever possible
+   - CI/CD from github through gitactions to AWS deployment. 
